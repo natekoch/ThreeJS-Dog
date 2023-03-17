@@ -10,14 +10,12 @@ function computeBoundingBOX(object) {
     console.table(box);
 }
 
-
 // Define the colors and materials here
-const brown = new THREE.MeshBasicMaterial({ color: 'Chocolate' });
-const darkBrown = new THREE.MeshBasicMaterial({ color: 'Sienna' });
-const white = new THREE.MeshBasicMaterial({ color: 'White' });
-const black = new THREE.MeshBasicMaterial({ color: 'Black' });
-const pink  = new THREE.MeshBasicMaterial({ color: 'DeepPink' });
-
+const brown = new THREE.MeshToonMaterial({ color: 'Chocolate' });
+const darkBrown = new THREE.MeshToonMaterial({ color: 'Sienna' });
+const white = new THREE.MeshToonMaterial({ color: 'White' });
+const black = new THREE.MeshToonMaterial({ color: 'Black' });
+const pink  = new THREE.MeshToonMaterial({ color: 'DeepPink' });
 
 // Define sphere and cylinders
 const sphere = new THREE.SphereGeometry(1, 16, 16);
@@ -74,64 +72,75 @@ function createDog() {
     const pupilGeometry = sphere.clone().scale(0.05, 0.05, 0.05);
 
     const leftEye = new THREE.Mesh(eyeGeometry, white);
-    leftEye.position.y = -2.75;
-    leftEye.position.x = 1.3;
+    leftEye.position.y = -0.7;
+    leftEye.position.x = 0.2;
     leftEye.position.z = 0.3;
 
     const leftPupil = new THREE.Mesh(pupilGeometry, black);
-    leftPupil.position.y = -2.83;
-    leftPupil.position.x = 1.3;
+    leftPupil.position.y = -0.78;
+    leftPupil.position.x = 0.2;
     leftPupil.position.z = 0.3;
 
     const rightEye = new THREE.Mesh(eyeGeometry, white);
-    rightEye.position.y = -2.75;
-    rightEye.position.x = 1.3;
+    rightEye.position.y = -0.7;
+    rightEye.position.x = 0.2;
     rightEye.position.z = -0.3;
 
     const rightPupil = new THREE.Mesh(pupilGeometry, black);
-    rightPupil.position.y = -2.83;
-    rightPupil.position.x = 1.3;
+    rightPupil.position.y = -0.78;
+    rightPupil.position.x = 0.2;
     rightPupil.position.z = -0.3;
 
-    torso.add(leftEye, rightEye, leftPupil, rightPupil);
+    head.add(leftEye, rightEye, leftPupil, rightPupil);
 
     const mouthGeometry = sphere.clone().scale(0.15, 0.6, 0.4);
     const snout = new THREE.Mesh(mouthGeometry, darkBrown);
-    snout.position.y = -2.8;
-    snout.position.x = 1.07;
+    snout.position.y = -0.8;
+    snout.position.x = 0;
     snout.position.z = 0;
 
     const jaw = new THREE.Mesh(mouthGeometry, darkBrown);
-    jaw.position.y = -2.75;
-    jaw.position.x = 1;
+    jaw.position.y = -0.75;
+    jaw.position.x = -0.07;
     jaw.position.z = 0;
     jaw.rotation.z = -40 * Math.PI / 180;
 
     const tongueGeometry = sphere.clone().scale(0.08, 0.35, 0.1);
     const tongue = new THREE.Mesh(tongueGeometry, pink);
-    tongue.position.y = -3.1;
-    tongue.position.x = 0.9;
+    tongue.position.y = -1.2;
+    tongue.position.x = -0.2;
     tongue.position.z = 0;
     tongue.rotation.z = -25 * Math.PI / 180;
 
     const noseGeometry = sphere.clone().scale(0.07, 0.03, 0.15);
     const nose = new THREE.Mesh(noseGeometry, black);
-    nose.position.y = -3.38;
-    nose.position.x = 1.06;
+    nose.position.y = -1.38;
+    nose.position.x = 0.03;
     nose.position.z = 0;
 
-    torso.add(snout, jaw, tongue, nose);
+    head.add(snout, jaw, tongue, nose);
 
-    
+    const earGeometry = sphere.clone().scale(0.4, 0.1, 0.2);
+    const leftEar = new THREE.Mesh(earGeometry, darkBrown);
+    leftEar.position.y = 0;
+    leftEar.position.x = 0.8;
+    leftEar.position.z = 0.35;
+
+    const rightEar = new THREE.Mesh(earGeometry, darkBrown);
+    rightEar.position.y = 0;
+    rightEar.position.x = 0.8;
+    rightEar.position.z = -0.35;
+
+    head.add(leftEar, rightEar);
 
     return torso
 }
 
-
 torso = createDog();
 
 // Add lighting here
-
+const light = new THREE.PointLight(0xFFFFFF, 2, 100);
+light.position.set(30, 30, 30);
 
 
 // Create a new scene
@@ -139,8 +148,8 @@ const scene = new THREE.Scene();
 // Add all the parts to the scene
 scene.add(
     torso,
+    light,
 );
-
 
 // Set the camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000);
