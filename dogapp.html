@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dog</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <link rel="stylesheet" href="dogapp.css">
+</head>
+
+<body>
+    <canvas id="threejs" align="center"></canvas>
+    <nav>
+        <ul>
+            <!--This is just an example button. You would need to bind the click event
+            for this button to your animation function in the dogapp.js-->
+            <li><a id="random-animation" href="">Random Animation</a></li>
+        </ul>
+    </nav>
+</body>
+
+<!-- Import the Three.js library using a script tag -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.136.0/examples/js/controls/OrbitControls.js"></script>
+<script src="dogapp.js"></script>
