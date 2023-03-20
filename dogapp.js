@@ -356,11 +356,8 @@ loop();
 
 stopAnimations = 1;
 
-goingLeft = 1
+goingLeft = 1;
 function animateHead() {
-    // This is an example animation function
-    // You should add code to it or create a new function similar to it 
-    // to animate a certain body part of the dog
     if (stopAnimations)
         return;
     
@@ -378,24 +375,80 @@ function animateHead() {
         if (head.rotation.x < -1)
             goingLeft = 1;
     }
-    console.log(head.rotation.x);
+    
 
     renderer.render(scene, camera);
 }
 
+goingRight = 1;
 function animateTail()
 {
+    if (stopAnimations)
+        return;
+    
+    requestAnimationFrame( animateTail );
+
+    tail = torso.children[6];
+    if (goingRight == 1) 
+    {
+        tail.rotation.y -= 0.05;
+        if (tail.rotation.y < -0.75)
+            goingRight = 0;
+    }
+    else
+    {
+        tail.rotation.y += 0.05;
+        if (tail.rotation.y > 0.75)
+            goingRight = 1;
+    }
+
+    renderer.render(scene, camera);
 
 }
 
-function animateLeg()
+goingOut = 1;
+function animateTongue()
 {
+    if (stopAnimations)
+        return;
+    
+    requestAnimationFrame( animateTongue );
+    tongue = torso.children[1].children[6];
+    if (goingOut) 
+    {
+        tongue.position.y -= 0.01;
+        if (tongue.position.y < -1.25)
+            goingOut = 0;
+    }
+    else
+    {
+        tongue.position.y += 0.01;
+        if (tongue.position.y > -1)
+            goingOut = 1;
+    }
+    
+    renderer.render(scene, camera);
 
+}
+
+function animateLight()
+{
+    if (stopAnimations)
+        return;
+    
+    requestAnimationFrame( animateLight );
+
+    light.color.setRGB(Math.random(), Math.random(), Math.random());
+
+    renderer.render(scene, camera);
 }
 
 function resetAnimations()
 {
-    torso.children[1].rotation.x = 0;
+    torso.children[1].rotation.x = 0; // head
+    torso.children[6].rotation.y = 0; // tail
+    torso.children[1].children[6].position.y = -1.2;// tongue
+    light.color.setRGB(1, 1, 1);
 }
 
 document.getElementById('stop-animations').addEventListener('click', function (event) {
@@ -413,4 +466,22 @@ document.getElementById('head-animation').addEventListener('click', function (ev
     event.preventDefault();
     stopAnimations = 0; 
     animateHead();
+});
+
+document.getElementById('tail-animation').addEventListener('click', function (event) {
+    event.preventDefault();
+    stopAnimations = 0; 
+    animateTail();
+});
+
+document.getElementById('tongue-animation').addEventListener('click', function (event) {
+    event.preventDefault();
+    stopAnimations = 0; 
+    animateTongue();
+});
+
+document.getElementById('light-animation').addEventListener('click', function (event) {
+    event.preventDefault();
+    stopAnimations = 0; 
+    animateLight();
 });
