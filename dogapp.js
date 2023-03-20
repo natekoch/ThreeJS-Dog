@@ -91,7 +91,6 @@ function createDog() {
 
     torso.add(leg1, leg2, leg3, leg4);
 
-    // TODO This is where you should add new code
     const eyeGeometry = sphere.clone().scale(0.1, 0.1, 0.1);
     const pupilGeometry = sphere.clone().scale(0.05, 0.05, 0.05);
 
@@ -297,7 +296,6 @@ function createDog() {
     handle.position.z = 0;
 
     leash.add(handle);
-    
 
     return torso
 }
@@ -356,21 +354,63 @@ const loop = () => {
 
 loop();
 
+stopAnimations = 1;
 
-function animateBodyPart() {
+goingLeft = 1
+function animateHead() {
     // This is an example animation function
     // You should add code to it or create a new function similar to it 
     // to animate a certain body part of the dog
+    if (stopAnimations)
+        return;
+    
+    requestAnimationFrame( animateHead );
+    head = torso.children[1];
+    if (goingLeft == 1) 
+    {
+        head.rotation.x += 0.01;
+        if (head.rotation.x > 1)
+            goingLeft = 0;
+    }
+    else
+    {
+        head.rotation.x -= 0.01;
+        if (head.rotation.x < -1)
+            goingLeft = 1;
+    }
+    console.log(head.rotation.x);
+
+    renderer.render(scene, camera);
 }
 
-// This is how you would attach an animation function to a button on the nav bar
-// Below we have attached animateBodyPart function to `Random Animation` button
-// on the navbar. Once the button is clicked, it will trigger the animation function
-document.getElementById('random-animation').addEventListener('click', function (event) {
+function animateTail()
+{
+
+}
+
+function animateLeg()
+{
+
+}
+
+function resetAnimations()
+{
+    torso.children[1].rotation.x = 0;
+}
+
+document.getElementById('stop-animations').addEventListener('click', function (event) {
     event.preventDefault();
-    animateBodyPart();
+    stopAnimations = 1;
 });
 
+document.getElementById('reset-animations').addEventListener('click', function (event) {
+    event.preventDefault();
+    stopAnimations = 1;
+    resetAnimations();
+});
 
-// You also need to find a way how to stop the animation
-// You also need to find a way how to reset the positions of the animated object.
+document.getElementById('head-animation').addEventListener('click', function (event) {
+    event.preventDefault();
+    stopAnimations = 0; 
+    animateHead();
+});
