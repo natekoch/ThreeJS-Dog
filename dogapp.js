@@ -10,12 +10,36 @@ function computeBoundingBOX(object) {
     console.table(box);
 }
 
+// Taken from the three.js docs
+class CustomSinCurve extends THREE.Curve {
+
+	constructor( scale = 1 ) {
+
+		super();
+
+		this.scale = scale;
+
+	}
+
+	getPoint( t, optionalTarget = new THREE.Vector3() ) {
+
+		const tx = t * 3 - 1.5;
+		const ty = Math.sin( 2 * Math.PI * t );
+		const tz = 0;
+
+		return optionalTarget.set( tx, ty, tz ).multiplyScalar( this.scale );
+
+	}
+
+}
+
 // Define the colors and materials here
 const brown = new THREE.MeshToonMaterial({ color: 'Chocolate' });
 const darkBrown = new THREE.MeshToonMaterial({ color: 'Sienna' });
 const white = new THREE.MeshToonMaterial({ color: 'White' });
 const black = new THREE.MeshToonMaterial({ color: 'Black' });
 const pink  = new THREE.MeshToonMaterial({ color: 'DeepPink' });
+const green  = new THREE.MeshToonMaterial({ color: 'DarkOliveGreen' });
 
 // Define sphere and cylinders
 const sphere = new THREE.SphereGeometry(1, 16, 16);
@@ -132,6 +156,148 @@ function createDog() {
     rightEar.position.z = -0.35;
 
     head.add(leftEar, rightEar);
+
+    const pawGeometry = sphere.clone().scale(0.4, 0.1, 0.3);
+    const paw1 = new THREE.Mesh(pawGeometry, darkBrown);
+    paw1.position.y = 0.65;
+    paw1.position.x = -0.1;
+    paw1.position.z = 0;
+
+    leg1.add(paw1);
+
+    const paw2 = new THREE.Mesh(pawGeometry, darkBrown);
+    paw2.position.y = 0.65;
+    paw2.position.x = -0.1;
+    paw2.position.z = 0;
+
+    leg2.add(paw2);
+
+    const paw3 = new THREE.Mesh(pawGeometry, darkBrown);
+    paw3.position.y = 0.65;
+    paw3.position.x = -0.1;
+    paw3.position.z = 0;
+
+    leg3.add(paw3);
+
+    const paw4 = new THREE.Mesh(pawGeometry, darkBrown);
+    paw4.position.y = 0.65;
+    paw4.position.x = -0.1;
+    paw4.position.z = 0;
+
+    leg4.add(paw4);
+
+    const clawGeometry = sphere.clone().scale(0.1, 0.07, 0.05);
+    const claw1L = new THREE.Mesh(clawGeometry, black);
+    claw1L.position.y = -0.06;
+    claw1L.position.x = -0.25;
+    claw1L.position.z = 0.15;
+
+    const claw1C = new THREE.Mesh(clawGeometry, black);
+    claw1C.position.y = -0.06;
+    claw1C.position.x = -0.3;
+    claw1C.position.z = 0;
+
+    const claw1R = new THREE.Mesh(clawGeometry, black);
+    claw1R.position.y = -0.06;
+    claw1R.position.x = -0.25;
+    claw1R.position.z = -0.15;
+
+    paw1.add(claw1L, claw1C, claw1R);
+
+    const claw2L = new THREE.Mesh(clawGeometry, black);
+    claw2L.position.y = -0.06;
+    claw2L.position.x = -0.25;
+    claw2L.position.z = 0.15;
+
+    const claw2C = new THREE.Mesh(clawGeometry, black);
+    claw2C.position.y = -0.06;
+    claw2C.position.x = -0.3;
+    claw2C.position.z = 0;
+
+    const claw2R = new THREE.Mesh(clawGeometry, black);
+    claw2R.position.y = -0.06;
+    claw2R.position.x = -0.25;
+    claw2R.position.z = -0.15;
+
+    paw2.add(claw2L, claw2C, claw2R);
+
+    const claw3L = new THREE.Mesh(clawGeometry, black);
+    claw3L.position.y = -0.06;
+    claw3L.position.x = -0.25;
+    claw3L.position.z = 0.15;
+
+    const claw3C = new THREE.Mesh(clawGeometry, black);
+    claw3C.position.y = -0.06;
+    claw3C.position.x = -0.3;
+    claw3C.position.z = 0;
+
+    const claw3R = new THREE.Mesh(clawGeometry, black);
+    claw3R.position.y = -0.06;
+    claw3R.position.x = -0.25;
+    claw3R.position.z = -0.15;
+
+    paw3.add(claw3L, claw3C, claw3R);
+
+    const claw4L = new THREE.Mesh(clawGeometry, black);
+    claw4L.position.y = -0.06;
+    claw4L.position.x = -0.25;
+    claw4L.position.z = 0.15;
+
+    const claw4C = new THREE.Mesh(clawGeometry, black);
+    claw4C.position.y = -0.06;
+    claw4C.position.x = -0.3;
+    claw4C.position.z = 0;
+
+    const claw4R = new THREE.Mesh(clawGeometry, black);
+    claw4R.position.y = -0.06;
+    claw4R.position.x = -0.25;
+    claw4R.position.z = -0.15;
+
+    paw4.add(claw4L, claw4C, claw4R);
+
+    const path = new CustomSinCurve(2);
+    const tailGeometry = new THREE.TubeGeometry(path, 20, 1, 8, false).scale(0.2, 0.1, 0.1);
+    const tail = new THREE.Mesh(tailGeometry, brown);
+    tail.position.y = 1.45;
+    tail.position.x = 0.75;
+    tail.position.z = 0;
+    tail.rotation.z = 35 * Math.PI / 180;
+
+    torso.add(tail);
+
+    const tailEndGeometry = sphere.clone().scale(0.2, 0.2, 0.2);
+    const tailEnd = new THREE.Mesh(tailEndGeometry, darkBrown);
+    tailEnd.position.y = 0.05;
+    tailEnd.position.x = 0.6;
+    tailEnd.position.z = 0;
+
+    tail.add(tailEnd);
+
+    const collarGeometry = new THREE.TorusGeometry(10, 3, 16, 100).scale(0.04, 0.04, 0.04);
+    const collar = new THREE.Mesh(collarGeometry, green);
+    collar.position.y = 0;
+    collar.position.x = 0;
+    collar.position.z = 0;
+    collar.rotation.x = 90 * Math.PI / 180;
+
+    neck.add(collar);
+
+    const pathLead = new CustomSinCurve(4);
+    const leashGeometry = new THREE.TubeGeometry(pathLead, 20, 1, 8, false).scale(0.4, 0.1, 0.1);
+    const leash = new THREE.Mesh(leashGeometry, green);
+    leash.position.y = 0.3;
+    leash.position.x = 2.4;
+    leash.position.z = 0;
+
+    collar.add(leash);
+
+    const handle = new THREE.Mesh(collarGeometry, green);
+    handle.position.y = 0.3;
+    handle.position.x = 2.4;
+    handle.position.z = 0;
+
+    leash.add(handle);
+    
 
     return torso
 }
